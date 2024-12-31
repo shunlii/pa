@@ -125,19 +125,24 @@ class Gallery {
         this.albumsGrid.innerHTML = '';
 
         try {
-            // 添加错误处理和重试逻辑
+            console.log('Requesting:', `${this.apiBase}/${this.currentCategory}`);
+            
             const response = await fetch(`${this.apiBase}/${this.currentCategory}`, {
                 headers: this.headers,
-                cache: 'no-store'  // 禁用缓存
+                cache: 'no-store'
             });
             
+            console.log('Response status:', response.status);
+            
             if (!response.ok) {
-                console.error('API Response:', await response.text());
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorText = await response.text();
+                console.error('Error response:', errorText);
+                throw new Error(`HTTP error! status: ${response.status}\n${errorText}`);
             }
 
             const data = await response.json();
-
+            console.log('Response data:', data);
+            
             // 过滤出目录
             const albums = data.filter(item => item.type === 'dir');
             
@@ -158,7 +163,7 @@ class Gallery {
                 `;
             }
         } catch (error) {
-            console.error('Error loading albums:', error);
+            console.error('Error details:', error);
             this.albumsGrid.innerHTML = `<div class="error-message">
                 加载失败，请稍后重试<br>
                 <small>${error.message}</small>
