@@ -3,8 +3,8 @@ const config = {
         owner: 'shunlii',
         repo: 'x',
         branch: 'main',
-        apiBase: 'https://your-worker.workers.dev'
+        apiBase: 'https://github-proxy.aikeyu158.workers.dev'
     }
 };
 
-window.config = config; 
+window.config = config;
