@@ -1,7 +1,12 @@
 class Gallery {
     constructor() {
+        // 添加配置检查
+        if (!window.config || !window.config.github) {
+            throw new Error('Configuration not found. Make sure config.js is loaded before main.js');
+        }
+
         // GitHub 配置
-        this.config = config.github;  // 使用配置文件中的值
+        this.config = window.config.github;
 
         this.apiBase = `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents`;
         this.rawBase = `https://raw.githubusercontent.com/${this.config.owner}/${this.config.repo}/${this.config.branch}`;
