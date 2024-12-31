@@ -8,12 +8,11 @@ class Gallery {
         // GitHub 配置
         this.config = window.config.github;
 
-        this.apiBase = `https://api.github.com/repos/${this.config.owner}/${this.config.repo}/contents`;
+        this.apiBase = this.config.apiBase;
         this.rawBase = `https://raw.githubusercontent.com/${this.config.owner}/${this.config.repo}/${this.config.branch}`;
         
         this.headers = {
-            'Accept': 'application/vnd.github.v3+json',
-            'Authorization': `token ${this.config.token}`  // 改回使用 'token' 前缀
+            'Accept': 'application/vnd.github.v3+json'
         };
 
         this.currentCategory = '';

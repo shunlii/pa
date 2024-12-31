@@ -3,9 +3,8 @@ const config = {
         owner: 'shunlii',
         repo: 'x',
         branch: 'main',
-        token: ''
+        apiBase: 'https://your-worker.workers.dev'
     }
 };
 
-// 添加导出
 window.config = config; 
