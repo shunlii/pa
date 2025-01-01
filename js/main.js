@@ -9,7 +9,7 @@ class Gallery {
         this.config = window.config.github;
 
         this.apiBase = this.config.apiBase;
-        this.rawBase = `https://raw.githubusercontent.com/${this.config.owner}/${this.config.repo}/${this.config.branch}`;
+        this.cdnBase = this.config.cdnBase;  // 使用 CDN 基础 URL
         
         this.headers = {
             'Accept': 'application/vnd.github.v3+json'
@@ -214,12 +214,12 @@ class Gallery {
             const content = atob(data.content);
             const albumData = JSON.parse(content);
 
-            // 创建相册卡片
+            // 创建相册卡片，使用 CDN URL
             this.createAlbumCard({
                 ...albumData,
                 id: albumId,
-                coverUrl: `${this.rawBase}/${this.currentCategory}/${albumId}/cover.jpg`,
-                url: `${this.rawBase}/${this.currentCategory}/${albumId}`
+                coverUrl: `${this.cdnBase}/${this.currentCategory}/${albumId}/cover.jpg`,
+                url: `${this.cdnBase}/${this.currentCategory}/${albumId}`
             });
         } catch (error) {
             console.error(`Error loading album ${albumId}:`, error);
@@ -451,17 +451,13 @@ class Gallery {
             });
             
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            const data = await response.json();
             
-            // 过滤出所有图片文件
-            return data
-                .filter(file => file.name.match(/\d+\.jpg$/))
-                .sort((a, b) => {
-                    const numA = parseInt(a.name);
-                    const numB = parseInt(b.name);
-                    return numA - numB;
-                })
-                .map(file => `${this.rawBase}/${this.currentCategory}/${album.id}/${file.name}`);
+            const data = await response.json();
+            const imageFiles = data
+                .filter(file => file.type === 'file' && file.name.match(/\.(jpg|jpeg|png|gif)$/i))
+                .map(file => `${this.cdnBase}/${this.currentCategory}/${album.id}/${file.name}`);
+                
+            return imageFiles;
         } catch (error) {
             console.error('Error loading album images:', error);
             return [];

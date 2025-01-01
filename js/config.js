@@ -2,8 +2,9 @@ const config = {
     github: {
         owner: 'shunlii',
         repo: 'x',
-        branch: 'main',
-        apiBase: 'https://github-proxy.aikeyu158.workers.dev'
+        branch: 'main', 
+        apiBase: 'https://proxy.aiky.us.kg',
+        cdnBase: 'https://cdn.jsdelivr.net/gh/shunlii/x@main'
     }
 };
 
